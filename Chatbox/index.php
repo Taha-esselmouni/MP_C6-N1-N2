@@ -1,3 +1,9 @@
+<?php
+
+include 'database.php';
+
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,13 +17,19 @@
 				<h1>SHOUT IT!</h1>
 			</header>
 			<div id="shouts">
-				<ul>
-					<li class="shout"><span>10:15PM - </span>Brad: Hey what are you guys up to? </li>
-					<li class="shout"><span>10:15PM - </span>Brad: Hey what are you guys up to? </li>
-				</ul>
+			  <?php
+			  	$sql = "SELECT id,user,message,time FROM shouts";
+				$result = mysqli_query($conn, $sql);
+			   while ($row = mysqli_fetch_assoc($result)) : ?>
+              <li class="shout"><span><?php echo $row['time']; ?> --- </span><strong><?php echo $row['user']; ?>:</strong> <?php echo $row['message']; ?> </li>
+             <?php endwhile; ?> </ul>`
+				
 			</div>
 			<div id="input">
 				<form method="post" action="process.php">
+				<?php if(isset($_GET["error"])):?>
+                  <div class="error"><?php echo $_GET['error'];?> </div>
+				<?php endif;?>
 					<input type="text" name="user" placeholder="Enter Your Name" />
 					<input type="text" name="message" placeholder="Enter A Message" />
 					<br />
@@ -27,3 +39,4 @@
 		</div>
 	</body>
 </html>
+
